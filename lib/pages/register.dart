@@ -23,12 +23,14 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
-      final email = _emailController.text.trim();
+      final email = _emailController.text.trim().toLowerCase();
       final username = _usernameController.text.trim();
       final password = _passwordController.text.trim();
 
       final existingUsers = await _dbHelper.getAllUsers();
-      final alreadyExists = existingUsers.any((u) => u.email == email);
+      final alreadyExists = existingUsers.any(
+        (u) => u.email.trim().toLowerCase() == email,
+      );
 
       if (alreadyExists) {
         showDialog(
@@ -62,7 +64,7 @@ class _RegisterPageState extends State<RegisterPage> {
       appBar: AppBar(
         title: Text(
           "Créer un compte",
-          style: GoogleFonts.poppins(color: Color(0xFF1B4B65)),
+          style: GoogleFonts.poppins(color: const Color(0xFF1B4B65)),
         ),
         backgroundColor: Colors.white,
         elevation: 0,
@@ -159,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     "Déjà un compte ? Connectez-vous",
                     style: GoogleFonts.poppins(
                       fontSize: 15,
-                      color: Color(0xFF1B4B65),
+                      color: const Color(0xFF1B4B65),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
