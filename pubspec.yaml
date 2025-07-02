@@ -1,0 +1,48 @@
+name: kwise
+description: "Application de quiz éducatif - Kwise"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  flutter_native_splash: ^2.3.10
+  google_fonts: ^6.2.1 
+  shared_preferences: ^2.0.15
+  font_awesome_flutter: ^10.7.0
+  sqflite: ^2.3.0
+  path: ^1.9.0
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_launcher_icons: ^0.13.1
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+  
+    - assets/images/culture.png
+    - assets/images/educatif.png
+    - assets/images/divertissement.png
+    - assets/images/moderne.png
+    - assets/icon.png
+    - assets/logo.png
+
+flutter_native_splash:
+  color: "#caebff"
+  image: assets/logo.png
+  android_gravity: center
+  ios: true
+
+flutter_icons:
+  android: true
+  ios: false
+  image_path: "assets/logo.png"
