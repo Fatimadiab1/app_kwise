@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 import '../database/questions.dart';
 import '../database/db_helper.dart';
 import '../models/historique.dart';
@@ -84,17 +85,23 @@ class _QuizPageState extends State<QuizPage> with TickerProviderStateMixin {
     final now = DateTime.now();
     final formattedDate = DateFormat('yyyy-MM-dd - kk:mm').format(now);
 
-    try {
-      final historique = Historique(
-        category: widget.category,
-        difficulty: widget.difficulty,
-        score: score,
-        date: formattedDate,
-      );
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getInt('userId');
 
-      await DatabaseHelper().insertHistorique(historique);
-    } catch (e) {
-      print("Erreur d'enregistrement dans l'historique : $e");
+    if (userId != null) {
+      try {
+        final historique = Historique(
+          category: widget.category,
+          difficulty: widget.difficulty,
+          score: score,
+          date: formattedDate,
+          userId: userId,
+        );
+
+        await DatabaseHelper().insertHistorique(historique);
+      } catch (e) {
+        print("Erreur d'enregistrement dans l'historique : $e");
+      }
     }
 
     showDialog(
@@ -124,8 +131,7 @@ class _QuizPageState extends State<QuizPage> with TickerProviderStateMixin {
         actions: [
           TextButton.icon(
             icon: const Icon(Icons.home, color: Color(0xFF1B4B65)),
-            onPressed: () =>
-                Navigator.popUntil(context, ModalRoute.withName(AppRouter.first)),
+            onPressed: () => Navigator.pushReplacementNamed(context, AppRouter.first),
             label: Text(
               "Retour à l'accueil",
               style: GoogleFonts.poppins(color: Color(0xFF1B4B65)),
@@ -173,9 +179,7 @@ class _QuizPageState extends State<QuizPage> with TickerProviderStateMixin {
               LinearProgressIndicator(
                 value: (currentIndex + 1) / currentQuestions.length,
                 backgroundColor: Colors.grey[300],
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  Color(0xFF5FACD3),
-                ),
+                valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF5FACD3)),
               ),
               const SizedBox(height: 16),
               Text(

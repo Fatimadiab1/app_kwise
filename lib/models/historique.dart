@@ -4,6 +4,7 @@ class Historique {
   final String difficulty;
   final int score;
   final String date;
+  final int userId;
 
   Historique({
     this.id,
@@ -11,25 +12,24 @@ class Historique {
     required this.difficulty,
     required this.score,
     required this.date,
+    required this.userId,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'category': category,
-      'difficulty': difficulty,
-      'score': score,
-      'date': date,
-    };
-  }
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'category': category,
+        'difficulty': difficulty,
+        'score': score,
+        'date': date,
+        'userId': userId,
+      };
 
-  factory Historique.fromMap(Map<String, dynamic> map) {
-    return Historique(
-      id: map['id'],
-      category: map['category'],
-      difficulty: map['difficulty'],
-      score: map['score'],
-      date: map['date'],
-    );
-  }
+  static Historique fromMap(Map<String, dynamic> map) => Historique(
+        id: map['id'],
+        category: map['category'],
+        difficulty: map['difficulty'],
+        score: map['score'],
+        date: map['date'],
+        userId: map['userId'],
+      );
 }

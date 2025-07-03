@@ -32,15 +32,17 @@ class DatabaseHelper {
       )
     ''');
 
-    await db.execute('''
-      CREATE TABLE historique (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        category TEXT,
-        difficulty TEXT,
-        score INTEGER,
-        date TEXT
-      )
-    ''');
+  await db.execute('''
+  CREATE TABLE historique (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT,
+    difficulty TEXT,
+    score INTEGER,
+    date TEXT,
+    userId INTEGER
+  )
+''');
+
   }
 
   Future<int> insertUser(User user) async {
@@ -82,14 +84,25 @@ class DatabaseHelper {
     return maps.map((map) => User.fromMap(map)).toList();
   }
 
-  Future<void> insertHistorique(Historique historique) async {
-    final db = await database;
-    await db.insert(
-      'historique',
-      historique.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
+ Future<void> insertHistorique(Historique historique) async {
+  final db = await database;
+  await db.insert(
+    'historique',
+    historique.toMap(),
+    conflictAlgorithm: ConflictAlgorithm.replace,
+  );
+}
+Future<List<Historique>> getHistoriqueByUserId(int userId) async {
+  final db = await database;
+  final List<Map<String, dynamic>> maps = await db.query(
+    'historique',
+    where: 'userId = ?',
+    whereArgs: [userId],
+    orderBy: 'date DESC',
+  );
+  return List.generate(maps.length, (i) => Historique.fromMap(maps[i]));
+}
+
 
   Future<List<Historique>> getHistorique() async {
     final db = await database;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../database/db_helper.dart';
 import '../models/historique.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HistoriquePage extends StatefulWidget {
   const HistoriquePage({super.key});
@@ -19,12 +20,22 @@ class _HistoriquePageState extends State<HistoriquePage> {
     _loadHistorique();
   }
 
-  Future<void> _loadHistorique() async {
-    final data = await DatabaseHelper().getHistorique();
+Future<void> _loadHistorique() async {
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  final userId = prefs.getInt('userId');
+
+  if (isLoggedIn && userId != null) {
+    final data = await DatabaseHelper().getHistoriqueByUserId(userId);
     setState(() {
       historiqueList = data;
     });
+  } else {
+    setState(() {
+      historiqueList = []; // invité => pas d’historique
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) {

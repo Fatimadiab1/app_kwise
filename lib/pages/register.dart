@@ -47,10 +47,13 @@ class _RegisterPageState extends State<RegisterPage> {
         email: email,
         password: password,
       );
-      await _dbHelper.insertUser(newUser);
+
+      final insertedId = await _dbHelper.insertUser(newUser);
 
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('username', username);
+      await prefs.setInt('userId', insertedId); // ✅ Enregistre userId
+      await prefs.setBool('isLoggedIn', true); // ✅ Marque comme connecté
 
       Navigator.pushReplacementNamed(context, AppRouter.first);
     }

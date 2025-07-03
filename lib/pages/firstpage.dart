@@ -92,7 +92,7 @@ class _FirstPageState extends State<FirstPage> {
       children: [
         IconButton(
           icon: const Icon(Icons.arrow_back, color: Color(0xFF1B4B65)),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () =>  Navigator.pushReplacementNamed(context, AppRouter.accueil),
         ),
         Text(
           "Kwise",
