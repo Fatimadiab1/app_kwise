@@ -2,13 +2,13 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/user.dart';
 import '../models/historique.dart';
+import '../database/password_hasher.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
 
   factory DatabaseHelper() => _instance;
-
   DatabaseHelper._internal();
 
   Future<Database> get database async {
@@ -19,13 +19,10 @@ class DatabaseHelper {
 
   Future<Database> _initDb() async {
     final path = join(await getDatabasesPath(), 'kwise.db');
-
     return await openDatabase(path, version: 1, onCreate: _onCreate);
-    
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // table des utilisateurs
     await db.execute('''
       CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,7 +32,6 @@ class DatabaseHelper {
       )
     ''');
 
-    // table historique
     await db.execute('''
       CREATE TABLE historique (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,19 +45,33 @@ class DatabaseHelper {
 
   Future<int> insertUser(User user) async {
     final db = await database;
-    return await db.insert('users', user.toMap());
+    try {
+      String hashedPassword = PasswordHasher.hashPassword(user.password);
+      User userWithHashedPassword = User(
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        password: hashedPassword,
+      );
+      return await db.insert('users', userWithHashedPassword.toMap());
+    } catch (e) {
+      return -1;
+    }
   }
 
   Future<User?> getUserByEmailAndPassword(String email, String password) async {
     final db = await database;
     final maps = await db.query(
       'users',
-      where: 'email = ? AND password = ?',
-      whereArgs: [email, password],
+      where: 'email = ?',
+      whereArgs: [email],
     );
 
     if (maps.isNotEmpty) {
-      return User.fromMap(maps.first);
+      final user = User.fromMap(maps.first);
+      if (PasswordHasher.verifyPassword(password, user.password)) {
+        return user;
+      }
     }
     return null;
   }
@@ -87,9 +97,6 @@ class DatabaseHelper {
       'historique',
       orderBy: 'date DESC',
     );
-
-    return List.generate(maps.length, (i) {
-      return Historique.fromMap(maps[i]);
-    });
+    return List.generate(maps.length, (i) => Historique.fromMap(maps[i]));
   }
 }

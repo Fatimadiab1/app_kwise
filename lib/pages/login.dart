@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../database/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../database/db_helper.dart';
 import '../config/app_router.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
 
+      // On vérifie dans la base de données avec le hash
       final user = await _dbHelper.getUserByEmailAndPassword(email, password);
 
       if (user != null) {
