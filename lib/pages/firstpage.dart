@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../pages/quiz_page.dart';
-import '../pages/historiquepage.dart';
+import '../config/app_router.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -38,7 +37,7 @@ class _FirstPageState extends State<FirstPage> {
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, AppRouter.accueil);
   }
 
   @override
@@ -184,10 +183,7 @@ class _FirstPageState extends State<FirstPage> {
   Widget _buildHistoriqueButton() {
     return OutlinedButton.icon(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) => const HistoriquePage()),
-        );
+        Navigator.pushNamed(context, AppRouter.historique);
       },
       icon: const Icon(Icons.history, color: Color(0xFF1B4B65)),
       label: Text(
@@ -242,11 +238,13 @@ class _FirstPageState extends State<FirstPage> {
         ),
         onPressed: () {
           Navigator.pop(context);
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (_) => QuizPage(category: category, difficulty: label),
-            ),
+            AppRouter.quiz,
+            arguments: {
+              'category': category,
+              'difficulty': label,
+            },
           );
         },
         child: Row(
@@ -263,8 +261,7 @@ class _FirstPageState extends State<FirstPage> {
             Row(
               children: List.generate(
                 flames,
-                (_) =>
-                    const Icon(Icons.whatshot, color: Colors.orange, size: 18),
+                (_) => const Icon(Icons.whatshot, color: Colors.orange, size: 18),
               ),
             ),
           ],

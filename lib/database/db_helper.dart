@@ -21,6 +21,7 @@ class DatabaseHelper {
     final path = join(await getDatabasesPath(), 'kwise.db');
 
     return await openDatabase(path, version: 1, onCreate: _onCreate);
+    
   }
 
   Future<void> _onCreate(Database db, int version) async {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../database/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'register.dart';
+import '../config/app_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  Navigator.pushReplacementNamed(context, '/first');
+                  Navigator.pushReplacementNamed(context, AppRouter.first);
                 },
                 child: const Text("OK"),
               ),
@@ -90,8 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Email requis';
-                  if (!value.contains('@') || !value.contains('.'))
-                    return 'Email invalide';
+                  if (!value.contains('@') || !value.contains('.')) return 'Email invalide';
                   return null;
                 },
               ),
@@ -110,8 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 validator: (value) {
-                  if (value == null || value.length < 6)
-                    return 'Minimum 6 caractères';
+                  if (value == null || value.length < 6) return 'Minimum 6 caractères';
                   return null;
                 },
               ),
@@ -136,10 +134,7 @@ class _LoginPageState extends State<LoginPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => const RegisterPage()),
-                    );
+                    Navigator.pushNamed(context, AppRouter.register);
                   },
                   child: Text(
                     "Pas encore de compte ? Inscrivez-vous",

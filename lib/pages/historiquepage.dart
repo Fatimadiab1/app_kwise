@@ -76,10 +76,7 @@ class _HistoriquePageState extends State<HistoriquePage> {
                     children: [
                       Row(
                         children: [
-                          const Icon(
-                            Icons.auto_graph,
-                            color: Color(0xFF5FACD3),
-                          ),
+                          const Icon(Icons.auto_graph, color: Color(0xFF5FACD3)),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
@@ -99,8 +96,8 @@ class _HistoriquePageState extends State<HistoriquePage> {
                               color: h.score >= 7
                                   ? Colors.green
                                   : h.score >= 4
-                                  ? const Color(0xFF5FACD3)
-                                  : Colors.red,
+                                      ? const Color(0xFF5FACD3)
+                                      : Colors.red,
                             ),
                           ),
                         ],
@@ -113,18 +110,14 @@ class _HistoriquePageState extends State<HistoriquePage> {
                           h.score >= 7
                               ? Colors.green
                               : h.score >= 4
-                              ? const Color(0xFF5FACD3)
-                              : Colors.red,
+                                  ? const Color(0xFF5FACD3)
+                                  : Colors.red,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.access_time,
-                            size: 16,
-                            color: Colors.grey,
-                          ),
+                          const Icon(Icons.access_time, size: 16, color: Colors.grey),
                           const SizedBox(width: 4),
                           Text(
                             h.date,

@@ -4,6 +4,7 @@ import '../database/db_helper.dart';
 import '../models/historique.dart';
 import 'package:intl/intl.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../config/app_router.dart';
 
 class QuizPage extends StatefulWidget {
   final String category;
@@ -124,7 +125,7 @@ class _QuizPageState extends State<QuizPage> with TickerProviderStateMixin {
           TextButton.icon(
             icon: const Icon(Icons.home, color: Color(0xFF1B4B65)),
             onPressed: () =>
-                Navigator.popUntil(context, ModalRoute.withName('/first')),
+                Navigator.popUntil(context, ModalRoute.withName(AppRouter.first)),
             label: Text(
               "Retour à l'accueil",
               style: GoogleFonts.poppins(color: Color(0xFF1B4B65)),

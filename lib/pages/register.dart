@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../models/user.dart';
 import '../database/db_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
+import '../config/app_router.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -17,7 +17,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-
   final DatabaseHelper _dbHelper = DatabaseHelper();
   bool _obscurePassword = true;
 
@@ -53,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('username', username);
 
-      Navigator.pushReplacementNamed(context, '/first');
+      Navigator.pushReplacementNamed(context, AppRouter.first);
     }
   }
 
@@ -98,9 +97,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 validator: (value) {
                   if (value == null ||
-                      !RegExp(
-                        r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                      ).hasMatch(value)) {
+                      !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                          .hasMatch(value)) {
                     return "Email invalide";
                   }
                   return null;
@@ -152,10 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const LoginPage()),
-                    );
+                    Navigator.pushReplacementNamed(context, AppRouter.login);
                   },
                   child: Text(
                     "Déjà un compte ? Connectez-vous",

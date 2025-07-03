@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kwise/pages/register.dart';
-import 'package:kwise/pages/login.dart';
-import 'package:kwise/pages/firstpage.dart';
+import 'package:kwise/config/app_router.dart'; //
 
 void main() {
   runApp(const KwiseApp());
@@ -20,11 +18,8 @@ class KwiseApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFCAEBFF),
         textTheme: GoogleFonts.poppinsTextTheme(),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const AccueilPage(),
-        '/first': (context) => const FirstPage(),
-      },
+      initialRoute: AppRouter.accueil,
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
@@ -76,12 +71,7 @@ class AccueilPage extends StatelessWidget {
                           label: const Text("Connexion"),
                           onPressed: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const LoginPage(),
-                              ),
-                            );
+                            Navigator.pushNamed(context, AppRouter.login); 
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF1B4B65),
@@ -98,12 +88,7 @@ class AccueilPage extends StatelessWidget {
                           label: const Text("Inscription"),
                           onPressed: () {
                             Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const RegisterPage(),
-                              ),
-                            );
+                            Navigator.pushNamed(context, AppRouter.register); 
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF5FACD3),
@@ -172,7 +157,7 @@ class AccueilPage extends StatelessWidget {
                               label: const Text("Jouer sans compte"),
                               onPressed: () {
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, '/first');
+                                Navigator.pushNamed(context, AppRouter.first); 
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF5FACD3),
@@ -189,12 +174,7 @@ class AccueilPage extends StatelessWidget {
                               label: const Text("Connexion"),
                               onPressed: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const LoginPage(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, AppRouter.login); 
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: const Color(0xFF1B4B65),
@@ -209,12 +189,7 @@ class AccueilPage extends StatelessWidget {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => const RegisterPage(),
-                                  ),
-                                );
+                                Navigator.pushNamed(context, AppRouter.register); 
                               },
                               child: const Text("Créer un compte"),
                             ),
